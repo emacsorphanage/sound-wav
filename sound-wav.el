@@ -54,8 +54,9 @@
 
 (defun sound-wav--do-play-by-afplay (files)
   (deferred:$
-    (deferred:process
-      (apply 'deferred:process "afplay" files))))
+    (deferred:process-shell
+      (format "echo \"%s\" | awk '{ print \"afplay \" $0 }' | bash"
+              (mapconcat 'identity files "\n")))))
 
 (defun sound-wav--do-play-by-aplay (files)
   (deferred:$
