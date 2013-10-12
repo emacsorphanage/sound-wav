@@ -9,6 +9,13 @@
 * [deferred.el](https://github.com/kiwanami/emacs-deferred)
 
 
+## Interface
+
+### <code>(sound-wav-play wav-file1 wav-file2...)</code>
+
+Play wav-file1, wav-file2... . This function takes variable arguments.
+
+
 ## Sample Code
 
 ```elisp
