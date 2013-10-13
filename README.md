@@ -11,7 +11,7 @@
 
 ## Interface
 
-### <code>(sound-wav-play wav-file1 wav-file2...)</code>
+### `(sound-wav-play wav-file1 wav-file2...)`
 
 Play wav-file1, wav-file2... . This function takes variable arguments.
 
