@@ -1,11 +1,11 @@
 ;;; sound-wav.el --- Play wav file
 
-;; Copyright (C) 2013 by Syohei YOSHIDA
+;; Copyright (C) 2014 by Syohei YOSHIDA
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-sound-wav
 ;; Version: 0.01
-;; Package-Requires: ((deferred "0.3.1"))
+;; Package-Requires: ((deferred "0.3.1") (cl-lib "0.5"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,8 +26,7 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
+(require 'cl-lib)
 
 (require 'deferred)
 
@@ -73,12 +72,12 @@
          (error "Not found wav player on your system!!"))))
 
 (defun sound-wav--validate-files (files)
-  (loop for file in files
-        when (file-exists-p file)
-        collect file))
+  (cl-loop for file in files
+           when (file-exists-p file)
+           collect file))
 
 ;;;###autoload
-(defun* sound-wav-play (&rest files)
+(cl-defun sound-wav-play (&rest files)
   (let ((valid-files (sound-wav--validate-files files)))
     (when (null files)
       (error "No valid files!!"))
