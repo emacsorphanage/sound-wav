@@ -1,3 +1,5 @@
 *.wav
 *.wave
 conf.el
+/.cask/
+*.elc
