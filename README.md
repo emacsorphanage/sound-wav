@@ -1,4 +1,4 @@
-# sound-wav.el
+# sound-wav.el [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 
 `sound-wav.el` provides play wav file. It is Emacs port of [vim-sound](https://github.com/osyo-manga/vim-sound)
 
@@ -18,7 +18,7 @@ Play wav-file1, wav-file2... . This function takes variable arguments.
 
 ## Sample Code
 
-```elisp
+```lisp
 ;; Play wav file when file opened
 (defun my/find-file-hook ()
   (sound-wav-play "somemusic.wav"))
@@ -29,3 +29,8 @@ Play wav-file1, wav-file2... . This function takes variable arguments.
   '(progn
      (sound-wav-play "somemusic.wav")))
 ```
+
+[melpa-link]: http://melpa.org/#/sound-wav
+[melpa-stable-link]: http://stable.melpa.org/#/sound-wav
+[melpa-badge]: http://melpa.org/packages/sound-wav-badge.svg
+[melpa-stable-badge]: http://stable.melpa.org/packages/sound-wav-badge.svg
