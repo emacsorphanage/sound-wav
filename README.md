@@ -9,6 +9,15 @@
 * [deferred.el](https://github.com/kiwanami/emacs-deferred)
 
 
+## Installation
+
+`sound-wav` is available on [MELPA](https://melpa.org/) and [MELPA stable](https://stable.melpa.org/)
+
+You can install `sound-wav` with the following command.
+
+<kbd>M-x package-install [RET] sound-wav [RET]</kbd>
+
+
 ## Interface
 
 ### `(sound-wav-play wav-file1 wav-file2...)`
