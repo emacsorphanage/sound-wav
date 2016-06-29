@@ -34,9 +34,28 @@
   "Play wav file"
   :group 'sound)
 
+(defsubst sound-wav--powershell-sound-player-p ()
+  "Is powershell available to play windows files?"
+  (and (executable-find "powershell")
+       (memq system-type '(windows-nt ms-dos))))
+
+(defun sound-wav--do-play-by-powershell (files)
+  (deferred:$
+    (deferred:process
+      "powershell"
+      "-c"
+      (mapconcat
+       (lambda (file)
+         (format "(New-Object Media.SoundPlayer \"%s\").PlaySync()"
+                 file))
+       files
+       ";"))))
+
 (defsubst sound-wav--window-media-player-p ()
   (and (executable-find "ruby")
        (memq system-type '(windows-nt ms-dos))))
+
+
 
 (defun sound-wav--do-play-by-wmm (files)
   (deferred:$
@@ -62,7 +81,9 @@
     (apply 'deferred:process "aplay" files)))
 
 (defun sound-wav--do-play (files)
-  (cond ((sound-wav--window-media-player-p)
+  (cond ((sound-wav--powershell-sound-player-p)
+	 (sound-wav--do-play-by-powershell files))
+	((sound-wav--window-media-player-p)
          (sound-wav--do-play-by-wmm files))
         ((executable-find "afplay")
          (sound-wav--do-play-by-afplay files))
