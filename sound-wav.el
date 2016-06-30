@@ -1,10 +1,10 @@
 ;;; sound-wav.el --- Play wav file
 
-;; Copyright (C) 2014 by Syohei YOSHIDA
+;; Copyright (C) 2016 by Syohei YOSHIDA
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-sound-wav
-;; Version: 0.01
+;; Version: 0.02
 ;; Package-Requires: ((deferred "0.3.1") (cl-lib "0.5"))
 
 ;; This program is free software; you can redistribute it and/or modify

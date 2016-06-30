@@ -1,4 +1,7 @@
 Revision history for sound-wav.el
 
+Revision 0.02 2016/06/30 syohex
+    - Support Powershell(Thanks mattfidler)
+
 Revision 0.01 2015/05/28 syohex
     - Initial Release
