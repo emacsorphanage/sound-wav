@@ -55,8 +55,6 @@
   (and (executable-find "ruby")
        (memq system-type '(windows-nt ms-dos))))
 
-
-
 (defun sound-wav--do-play-by-wmm (files)
   (deferred:$
     (deferred:process
@@ -82,8 +80,8 @@
 
 (defun sound-wav--do-play (files)
   (cond ((sound-wav--powershell-sound-player-p)
-	 (sound-wav--do-play-by-powershell files))
-	((sound-wav--window-media-player-p)
+         (sound-wav--do-play-by-powershell files))
+        ((sound-wav--window-media-player-p)
          (sound-wav--do-play-by-wmm files))
         ((executable-find "afplay")
          (sound-wav--do-play-by-afplay files))
