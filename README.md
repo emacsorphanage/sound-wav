@@ -24,10 +24,10 @@ can be done with the following command:
 
 <kbd>M-x package-install [RET] poweshell [RET]</kbd>
 
-When this is installed, `sound-wav` will create an shell process named
-`*sound-wav-powershell*` to play sounds without needing to start
-poweshell multiple times.  For me this changes a 1-2 second delay in
-sounds to immediate sound processing.
+When this is installed, `sound-wav` will create a hidden shell process
+named `* sound-wav-powershell*` to play sounds without needing to
+start poweshell multiple times.  For me this changes a 1-2 second
+delay in sounds to immediate sound processing.
 
 ## Interface
 

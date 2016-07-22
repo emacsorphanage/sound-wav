@@ -47,9 +47,9 @@
 	 (or sound-wav--powershell-process
 	     (let ((buf (current-buffer)))
 	       (and 
-		(powershell "*sound-wav-powershell*")
+		(powershell " *sound-wav-powershell*")
 		(pop-to-buffer-same-window buf)
-		(setq sound-wav--powershell-process (get-buffer-process (get-buffer "*sound-wav-powershell*")))
+		(setq sound-wav--powershell-process (get-buffer-process (get-buffer " *sound-wav-powershell*")))
 		(set-process-query-on-exit-flag sound-wav--powershell-process nil)
 		sound-wav--powershell-process))))))
 
