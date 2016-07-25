@@ -17,6 +17,17 @@ You can install `sound-wav` with the following command.
 
 <kbd>M-x package-install [RET] sound-wav [RET]</kbd>
 
+To speed up sound playing in windows, make sure
+[powershell](https://msdn.microsoft.com/en-us/powershell/mt173057.aspx)
+is installed, and then install the emacs package `powershell`.  This
+can be done with the following command:
+
+<kbd>M-x package-install [RET] poweshell [RET]</kbd>
+
+When this is installed, `sound-wav` will create a hidden shell process
+named `* sound-wav-powershell*` to play sounds without needing to
+start poweshell multiple times.  For me this changes a 1-2 second
+delay in sounds to immediate sound processing.
 
 ## Interface
 
