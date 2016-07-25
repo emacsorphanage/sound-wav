@@ -30,9 +30,41 @@
 
 (require 'deferred)
 
+(when (memq system-type '(windows-nt ms-dos))
+  (require 'powershell nil t))
+
 (defgroup sound-wav nil
   "Play wav file"
   :group 'sound)
+
+(defvar sound-wav--powershell-process nil)
+(defsubst sound-wav--powershell-sound-player-process-p ()
+  "Create a powershell process to play windows files?"
+  (and (memq system-type '(windows-nt ms-dos))
+       (fboundp 'powershell)
+       (executable-find "powershell")
+       (save-excursion
+	 (or sound-wav--powershell-process
+	     (let ((buf (current-buffer)))
+	       (and
+		(powershell " *sound-wav-powershell*")
+		(pop-to-buffer-same-window buf)
+		(setq sound-wav--powershell-process (get-buffer-process (get-buffer " *sound-wav-powershell*")))
+		(set-process-query-on-exit-flag sound-wav--powershell-process nil)
+		sound-wav--powershell-process))))))
+
+(defun sound-wav--do-play-by-powershell-process (files)
+  (and sound-wav--powershell-process
+       (comint-send-string sound-wav--powershell-process
+			   (concat (mapconcat
+				    (lambda (file)
+				      (format "(New-Object Media.SoundPlayer \"%s\").PlaySync()"
+					      file))
+				    files
+				    "\n") "\n"))))
+
+;; Start powershell process to immediately parse sounds..
+(sound-wav--powershell-sound-player-process-p)
 
 (defsubst sound-wav--powershell-sound-player-p ()
   "Is powershell available to play windows files?"
@@ -79,9 +111,11 @@
     (apply 'deferred:process "aplay" files)))
 
 (defun sound-wav--do-play (files)
-  (cond ((sound-wav--powershell-sound-player-p)
-         (sound-wav--do-play-by-powershell files))
-        ((sound-wav--window-media-player-p)
+  (cond ((sound-wav--powershell-sound-player-process-p)
+	 (sound-wav--do-play-by-powershell-process files))
+	((sound-wav--powershell-sound-player-p)
+	 (sound-wav--do-play-by-powershell files))
+	((sound-wav--window-media-player-p)
          (sound-wav--do-play-by-wmm files))
         ((executable-find "afplay")
          (sound-wav--do-play-by-afplay files))
