@@ -4,6 +4,7 @@
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-sound-wav
+;; Package-Version: 20160725.1424
 ;; Version: 0.02
 ;; Package-Requires: ((deferred "0.3.1") (cl-lib "0.5"))
 
@@ -30,7 +31,7 @@
 
 (require 'deferred)
 
-(when (memq system-type '(windows-nt ms-dos))
+(when (memq system-type '(windows-nt ms-dos cygwin))
   (require 'powershell nil t))
 
 (defgroup sound-wav nil
@@ -40,7 +41,7 @@
 (defvar sound-wav--powershell-process nil)
 (defsubst sound-wav--powershell-sound-player-process-p ()
   "Create a powershell process to play windows files?"
-  (and (memq system-type '(windows-nt ms-dos))
+  (and (memq system-type '(windows-nt ms-dos cygwin))
        (fboundp 'powershell)
        (executable-find "powershell")
        (save-excursion
@@ -59,7 +60,10 @@
 			   (concat (mapconcat
 				    (lambda (file)
 				      (format "(New-Object Media.SoundPlayer \"%s\").PlaySync()"
-					      file))
+					      (cond
+					       ((memq system-type '(cygwin))
+						(cygwin-convert-file-name-to-windows file))
+					       (t file))))
 				    files
 				    "\n") "\n"))))
 
@@ -69,7 +73,7 @@
 (defsubst sound-wav--powershell-sound-player-p ()
   "Is powershell available to play windows files?"
   (and (executable-find "powershell")
-       (memq system-type '(windows-nt ms-dos))))
+       (memq system-type '(windows-nt ms-dos cygwin))))
 
 (defun sound-wav--do-play-by-powershell (files)
   (deferred:$
@@ -85,7 +89,7 @@
 
 (defsubst sound-wav--window-media-player-p ()
   (and (executable-find "ruby")
-       (memq system-type '(windows-nt ms-dos))))
+       (memq system-type '(windows-nt ms-dos cygwin))))
 
 (defun sound-wav--do-play-by-wmm (files)
   (deferred:$
