@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2016 by Syohei YOSHIDA
 
-;; Author: Syohei YOSHIDA <syohex@gmail.com>,
+;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-sound-wav
 ;; Package-Version: 20160725.1424
 ;; Version: 0.02
@@ -137,13 +137,15 @@
            when (file-exists-p file)
            collect file))
 
-(defun sound-wav-play (&rest files)
+;;;###autoload
+(cl-defun sound-wav-play (&rest files)
   (let ((valid-files (sound-wav--validate-files files)))
     (when (null files)
       (error "No valid files!!"))
     (sound-wav--do-play valid-files)))
 
-(defun sound-wav-play-inturrupt (&rest files)
+;;;###autoload
+(cl-defun sound-wav-play-inturrupt (&rest files)
   (let ((valid-files (sound-wav--validate-files files)))
     (when (null files)
       (error "No valid files!!"))
