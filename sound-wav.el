@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2016 by Syohei YOSHIDA
 
-;; Author: Syohei YOSHIDA <syohex@gmail.com>
+;; Author: Syohei YOSHIDA <syohex@gmail.com>,
 ;; URL: https://github.com/syohex/emacs-sound-wav
 ;; Package-Version: 20160725.1424
 ;; Version: 0.02
@@ -54,12 +54,14 @@
 		(set-process-query-on-exit-flag sound-wav--powershell-process nil)
 		sound-wav--powershell-process))))))
 
-(defun sound-wav--do-play-by-powershell-process (files)
+(defun sound-wav--do-play-by-powershell-process (files &optional inturruptp)
   (and sound-wav--powershell-process
        (comint-send-string sound-wav--powershell-process
 			   (concat (mapconcat
 				    (lambda (file)
-				      (format "(New-Object Media.SoundPlayer \"%s\").PlaySync()"
+				      (format (if inturruptp
+						  "(New-Object Media.SoundPlayer \"%s\").Play()"
+						  "(New-Object Media.SoundPlayer \"%s\").PlaySync()")
 					      (cond
 					       ((memq system-type '(cygwin))
 						(cygwin-convert-file-name-to-windows file))
@@ -75,14 +77,16 @@
   (and (executable-find "powershell")
        (memq system-type '(windows-nt ms-dos cygwin))))
 
-(defun sound-wav--do-play-by-powershell (files)
+(defun sound-wav--do-play-by-powershell (files &optional inturruptp)
   (deferred:$
     (deferred:process
       "powershell"
       "-c"
       (mapconcat
        (lambda (file)
-         (format "(New-Object Media.SoundPlayer \"%s\").PlaySync()"
+         (format (if inturruptp
+		     "(New-Object Media.SoundPlayer \"%s\").Play()"
+		   "(New-Object Media.SoundPlayer \"%s\").PlaySync()")
                  file))
        files
        ";"))))
@@ -114,11 +118,11 @@
   (deferred:$
     (apply 'deferred:process "aplay" files)))
 
-(defun sound-wav--do-play (files)
+(defun sound-wav--do-play (files &optional inturruptp)
   (cond ((sound-wav--powershell-sound-player-process-p)
-	 (sound-wav--do-play-by-powershell-process files))
+	 (sound-wav--do-play-by-powershell-process files inturruptp))
 	((sound-wav--powershell-sound-player-p)
-	 (sound-wav--do-play-by-powershell files))
+	 (sound-wav--do-play-by-powershell files inturruptp))
 	((sound-wav--window-media-player-p)
          (sound-wav--do-play-by-wmm files))
         ((executable-find "afplay")
@@ -133,13 +137,17 @@
            when (file-exists-p file)
            collect file))
 
-;;;###autoload
-(cl-defun sound-wav-play (&rest files)
+(defun sound-wav-play (&rest files)
   (let ((valid-files (sound-wav--validate-files files)))
     (when (null files)
       (error "No valid files!!"))
     (sound-wav--do-play valid-files)))
 
-(provide 'sound-wav)
+(defun sound-wav-play-inturrupt (&rest files)
+  (let ((valid-files (sound-wav--validate-files files)))
+    (when (null files)
+      (error "No valid files!!"))
+    (sound-wav--do-play valid-files t)))
 
+(provide 'sound-wav)
 ;;; sound-wav.el ends here
