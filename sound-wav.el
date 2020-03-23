@@ -38,7 +38,9 @@
   "Play wav file"
   :group 'sound)
 
-(defvar sound-wav--powershell-process nil)
+(defvar sound-wav--powershell-process nil
+  "Not documented.")
+
 (defsubst sound-wav--powershell-sound-player-process-p ()
   "Create a powershell process to play windows files?"
   (and (memq system-type '(windows-nt ms-dos cygwin))
@@ -55,6 +57,7 @@
 		sound-wav--powershell-process))))))
 
 (defun sound-wav--do-play-by-powershell-process (files)
+  "Not documented."
   (and sound-wav--powershell-process
        (comint-send-string sound-wav--powershell-process
 			   (concat (mapconcat
@@ -76,6 +79,7 @@
        (memq system-type '(windows-nt ms-dos cygwin))))
 
 (defun sound-wav--do-play-by-powershell (files)
+  "Not documented."
   (deferred:$
     (deferred:process
       "powershell"
@@ -88,10 +92,12 @@
        ";"))))
 
 (defsubst sound-wav--window-media-player-p ()
+  "Not documented."
   (and (executable-find "ruby")
        (memq system-type '(windows-nt ms-dos cygwin))))
 
 (defun sound-wav--do-play-by-wmm (files)
+  "Not documented."
   (deferred:$
     (deferred:process
       "ruby"
@@ -105,16 +111,19 @@
        ";"))))
 
 (defun sound-wav--do-play-by-afplay (files)
+  "Not documented."
   (deferred:$
     (deferred:process-shell
       (format "echo \"%s\" | awk '{ print \"afplay \" $0 }' | bash"
               (mapconcat 'identity files "\n")))))
 
 (defun sound-wav--do-play-by-aplay (files)
+  "Not documented."
   (deferred:$
     (apply 'deferred:process "aplay" files)))
 
 (defun sound-wav--do-play (files)
+  "Not documented."
   (cond ((sound-wav--powershell-sound-player-process-p)
 	 (sound-wav--do-play-by-powershell-process files))
 	((sound-wav--powershell-sound-player-p)
@@ -129,6 +138,7 @@
          (error "Not found wav player on your system!!"))))
 
 (defun sound-wav--validate-files (files)
+  "Not documented."
   (cl-loop for file in files
            when (file-exists-p file)
            collect file))
