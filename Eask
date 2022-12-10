@@ -1,6 +1,6 @@
 (package "sound-wav"
          "0.02"
-         "Show information on the side")
+         "Play wav file")
 
 (website-url "https://github.com/syohex/emacs-sound-wav")
 (keywords "")
