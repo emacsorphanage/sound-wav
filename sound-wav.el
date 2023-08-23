@@ -126,8 +126,8 @@
  "Not documented."
   (deferred:$
     (deferred:process-shell
-      (format "printf \"%s\" | sed 's/^/aucat -i /' | sh"
-              (mapconcat 'identity files "\n")))))
+      (format "printf \"%s\n\" | sed 's/^/aucat -i /' | sh"
+              (mapconcat 'identity files)))))
  	  
 (defun sound-wav--do-play (files)
   "Not documented."
