@@ -122,6 +122,13 @@
   (deferred:$
     (apply 'deferred:process "aplay" files)))
 
+(defun sound-wav--do-play-by-aucat (files)
+ "Not documented."
+  (deferred:$
+    (deferred:process-shell
+      (format "printf \"%s\n\" | sed 's/^/aucat -i /' | sh"
+              (mapconcat 'identity files)))))
+ 	  
 (defun sound-wav--do-play (files)
   "Not documented."
   (cond ((sound-wav--powershell-sound-player-process-p)
@@ -134,6 +141,8 @@
          (sound-wav--do-play-by-afplay files))
         ((executable-find "aplay")
          (sound-wav--do-play-by-aplay files))
+	((executable-find "aucat")
+	 (sound-wav--do-play-by-aucat files))
         (t
          (error "Not found wav player on your system!!"))))
 
