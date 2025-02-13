@@ -3,3 +3,6 @@
 conf.el
 /.cask/
 *.elc
+
+# OS generated
+.DS_Store
