@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "sound-wav"
          "0.02"
          "Play wav file")
